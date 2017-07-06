@@ -1,0 +1,10 @@
+cmake_minimum_required(VERSION 3.0)
+include(ExternalProject)
+
+include(External_gettext.cmake)
+include(External_glib.cmake)
+include(External_pkg-config.cmake)
+include(External_libusb.cmake)
+include(External_libserialport.cmake)
+include(External_libzip.cmake)
+include(External_libsigrok.cmake)
