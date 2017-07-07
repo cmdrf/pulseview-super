@@ -12,19 +12,25 @@ endif()
 
 ExternalProject_Add(glib
 	DEPENDS gettext
-#	DEPENDS pkg-config
-	URL http://ftp.gnome.org/pub/gnome/sources/glib/2.52/glib-2.52.3.tar.xz
-	URL_HASH SHA256=25ee7635a7c0fcd4ec91cbc3ae07c7f8f5ce621d8183511f414ded09e7e4e128
+	DEPENDS pkg-config
+	URL https://download.gnome.org/sources/glib/2.50/glib-2.50.3.tar.xz
+	URL_HASH SHA256=82ee94bf4c01459b6b00cb9db0545c2237921e3060c0b74cff13fbc020cfd999
+#	URL http://ftp.gnome.org/pub/gnome/sources/glib/2.51/glib-2.51.5.tar.xz
+#	URL_HASH SHA256=fec5483099c8309c4b4c06cd88eb37f464f0f4642bdc225344cd497fe25abe75
+#	URL http://ftp.gnome.org/pub/gnome/sources/glib/2.53/glib-2.53.2.tar.xz
+#	URL_HASH SHA256=ad727874057d369bf5f77f3ed32e2c50488672c99e62ee701a7f0ffdc47381a1
+#	URL http://ftp.gnome.org/pub/gnome/sources/glib/2.53/glib-2.53.3.tar.xz
+#	URL_HASH SHA256=ad727874057d369bf5f77f3ed32e2c50488672c99e62ee701a7f0ffdc47381a1
 	BUILD_IN_SOURCE On
 	CONFIGURE_COMMAND  env
-#		PKG_CONFIG=${CMAKE_BINARY_DIR}/dep-install/bin/pkg-config
+		PKG_CONFIG=${CMAKE_BINARY_DIR}/dep-install/bin/pkg-config
 #		PKG_CONFIG_PATH=${CMAKE_BINARY_DIR}/dep-install/lib/pkgconfig
 		LIBFFI_CFLAGS=-I${FFI_INCLUDE_DIR}
 		LIBFFI_LIBS=${FFI_LIBRARY}
 		CPPFLAGS=-I${CMAKE_BINARY_DIR}/dep-install/include
 		LDFLAGS=-L${CMAKE_BINARY_DIR}/dep-install/lib
 		PATH=${CMAKE_BINARY_DIR}/dep-install/bin:$ENV{PATH}
-	./configure  --prefix=${CMAKE_BINARY_DIR}/dep-install --with-pcre
+	./configure  --prefix=${CMAKE_BINARY_DIR}/dep-install --with-pcre #--with-threads=posix
 	BUILD_COMMAND make
 )
 
