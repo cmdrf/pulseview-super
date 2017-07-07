@@ -5,5 +5,6 @@ ExternalProject_Add(boost
 	CONFIGURE_COMMAND ./bootstrap.sh
 		--prefix=${CMAKE_BINARY_DIR}/dep-install
 		--with-libraries=system,filesystem,serialization,test
-	BUILD_COMMAND ./b2 install
+	BUILD_COMMAND ./b2 link=static cxxflags=-std=gnu++14 install
+	EXCLUDE_FROM_ALL
 )

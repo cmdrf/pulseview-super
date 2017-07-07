@@ -1,4 +1,4 @@
-ExternalProject_Add(pulseview
+ExternalProject_Add(ext_pulseview
 	DEPENDS boost
 	DEPENDS libsigrok
 	DEPENDS libsigrokdecode
@@ -12,5 +12,6 @@ ExternalProject_Add(pulseview
 		-DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}/dep-install/
 		-DPKG_CONFIG_USE_CMAKE_PREFIX_PATH=On
 		-DDISABLE_WERROR=On
-		-CMAKE_BUILD_TYPE=Release
+		-DCMAKE_BUILD_TYPE=Release
+		-DENABLE_TESTS=Off
 )

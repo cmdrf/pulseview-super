@@ -1,18 +1,12 @@
 find_path(FFI_INCLUDE_DIR ffi.h PATHS /usr/include PATH_SUFFIXES ffi)
-if(FFI_INCLUDE_DIR)
-	message("ffi.h found in ${FFI_INCLUDE_DIR}")
-else()
+if(NOT FFI_INCLUDE_DIR)
 	message(FATAL_ERROR "ffi.h not found")
-endif()
-
-find_library(FFI_LIBRARY NAMES libffi.dylib libffi.so ffi.dll)
-if(NOT FFI_LIBRARY)
-	message(FATAL_ERROR "libffi not found")
 endif()
 
 ExternalProject_Add(glib
 	DEPENDS gettext
 	DEPENDS pkg-config
+	# https://bugzilla.gnome.org/show_bug.cgi?id=781947 prevents newer versions from working:
 	URL https://download.gnome.org/sources/glib/2.50/glib-2.50.3.tar.xz
 	URL_HASH SHA256=82ee94bf4c01459b6b00cb9db0545c2237921e3060c0b74cff13fbc020cfd999
 #	URL http://ftp.gnome.org/pub/gnome/sources/glib/2.51/glib-2.51.5.tar.xz
@@ -23,14 +17,14 @@ ExternalProject_Add(glib
 #	URL_HASH SHA256=ad727874057d369bf5f77f3ed32e2c50488672c99e62ee701a7f0ffdc47381a1
 	BUILD_IN_SOURCE On
 	CONFIGURE_COMMAND  env
+		-S "LDFLAGS=\"-L${CMAKE_BINARY_DIR}/dep-install/lib -lffi\""
 		PKG_CONFIG=${CMAKE_BINARY_DIR}/dep-install/bin/pkg-config
-#		PKG_CONFIG_PATH=${CMAKE_BINARY_DIR}/dep-install/lib/pkgconfig
+		PKG_CONFIG_PATH=${CMAKE_BINARY_DIR}/dep-install/lib/pkgconfig
 		LIBFFI_CFLAGS=-I${FFI_INCLUDE_DIR}
-		LIBFFI_LIBS=${FFI_LIBRARY}
+		LIBFFI_LIBS=-lffi
 		CPPFLAGS=-I${CMAKE_BINARY_DIR}/dep-install/include
-		LDFLAGS=-L${CMAKE_BINARY_DIR}/dep-install/lib
 		PATH=${CMAKE_BINARY_DIR}/dep-install/bin:$ENV{PATH}
-	./configure  --prefix=${CMAKE_BINARY_DIR}/dep-install --with-pcre #--with-threads=posix
+	./configure  --prefix=${CMAKE_BINARY_DIR}/dep-install --with-pcre
 	BUILD_COMMAND make
 )
 
