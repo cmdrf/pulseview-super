@@ -3,7 +3,7 @@ ExternalProject_Add(python
 	URL_MD5 692b4fc3a2ba0d54d1495d4ead5b0b5c
 	BUILD_IN_SOURCE On
 	CONFIGURE_COMMAND env
-	PKG_CONFIG=${CMAKE_BINARY_DIR}/dep-install/bin/pkg-config
+	PKG_CONFIG=${PKG_CONFIG_EXECUTABLE}
 	PKG_CONFIG_PATH=${CMAKE_BINARY_DIR}/dep-install/lib/pkgconfig/
 	./configure --prefix=${CMAKE_BINARY_DIR}/dep-install
 )

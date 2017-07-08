@@ -18,7 +18,7 @@ ExternalProject_Add(glib
 	BUILD_IN_SOURCE On
 	CONFIGURE_COMMAND  env
 		-S "LDFLAGS=\"-L${CMAKE_BINARY_DIR}/dep-install/lib -lffi\""
-		PKG_CONFIG=${CMAKE_BINARY_DIR}/dep-install/bin/pkg-config
+		PKG_CONFIG=${PKG_CONFIG_EXECUTABLE}
 		PKG_CONFIG_PATH=${CMAKE_BINARY_DIR}/dep-install/lib/pkgconfig
 		LIBFFI_CFLAGS=-I${FFI_INCLUDE_DIR}
 		LIBFFI_LIBS=-lffi
