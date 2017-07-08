@@ -2,7 +2,7 @@ os: osx
 language: cpp
 
 before_install:
-- brew install qt@5.7
+- brew install qt@5.7 gettext
 
 install: true
 
