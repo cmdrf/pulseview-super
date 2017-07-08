@@ -2,16 +2,25 @@ os: osx
 language: cpp
 
 before_install:
-  - brew install qt@5.7
+- brew install qt@5.7
 
 install: true
 
 before_script:
-  - mkdir build
-  - cd build
-  - cmake -DCMAKE_PREFIX_PATH=/usr/local/opt/qt@5.7/ ..
+- mkdir build
+- cd build
+- cmake -DCMAKE_PREFIX_PATH=/usr/local/opt/qt@5.7/ ..
 
 script:
-  - make
-  - make install
+- make
+- make install
 
+before_deploy: mv PulseView.dmg PulseView-$TRAVIS_TAG.dmg
+deploy:
+  provider: releases
+  api_key:
+    secure: jopq9mthhQDu5h26SrkqlYkYtOGAMvEjHV5vVoNG6WNZAskzk6h282BI/YDu5KW2n8OR/LQoqcogM2heQo90fWQUL/KtqcKsxNt8SIZWIgkPj6g1EWIBC1VubgkzHpbrccxavjUmnDvDcv3p3pPj83xZEuF6rMVJNO05+fw8gsWY2Ws3j9vXZL8j8unbUvMxwpuUHmaan5Qu9M/IaDdfvTBP79TKUVTVztEB2kbf3KEf+J8AwbPoLM9A9kgoLEeFtTQrlH8zLXYlQkF1L+JCmzeFWWGh/Wc6KgNLNC8/7gWw+N0rFHp31tmpALCTrX8pW9KN/X9aKIuO9WzzVWslgKzrMq4ZiPQgl4bcAo1yATSgpX4AbkvZ0S+nxrxTF80sJRYGcTON9Eq08QF/baerROUpVdFRCrA5+CElwa6zL1WAxFSCuC5F8X6yOZI05de/3s5DPPchvtuGHLhwqblvTv35Uv4A5VdxzPgh8oK+o2D2FNPIwkGAf661dza144KN7XPCSydSg8XpG1t8oy+I7ttaCqhrgfWPPplK13Dvr7yAOarzYhNuPIvfsjVLxyTXM7wNK8rXHoYwkU6dA+Uebkz37rg6ZirS0Wng8Dkv1Nt8ofJfVNWr4sE5ArlKpyXgYNR9aaPInh1U1ya6ci6HIHVIfAZwR7DSK24yljpTsN0=
+  file: $TRAVIS_BUILD_DIR/build/PulseView-$TRAVIS_TAG.dmg
+  skip_cleanup: true
+  on:
+	tags: true
