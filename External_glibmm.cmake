@@ -14,7 +14,7 @@ ExternalProject_Add(glibmm
 	BUILD_IN_SOURCE On
 
 	CONFIGURE_COMMAND env
-		PKG_CONFIG=${CMAKE_BINARY_DIR}/dep-install/bin/pkg-config
+		PKG_CONFIG=${PKG_CONFIG_EXECUTABLE}
 		PKG_CONFIG_PATH=${CMAKE_BINARY_DIR}/dep-install/lib/pkgconfig/
 		./configure --prefix=${CMAKE_BINARY_DIR}/dep-install --disable-documentation
 
