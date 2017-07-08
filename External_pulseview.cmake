@@ -14,4 +14,9 @@ ExternalProject_Add(ext_pulseview
 		-DDISABLE_WERROR=On
 		-DCMAKE_BUILD_TYPE=Release
 		-DENABLE_TESTS=Off
+		-DQt5Core_DIR=${Qt5Core_DIR}
+		-DQt5Gui_DIR=${Qt5Gui_DIR}
+		-DQt5Widgets_DIR=${Qt5Widgets_DIR}
+		-DQt5Svg_DIR=${Qt5Svg_DIR}
+		-DQt5_DIR=${Qt5_DIR}
 )

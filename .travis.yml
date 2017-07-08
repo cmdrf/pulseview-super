@@ -1,6 +1,9 @@
 os: osx
 language: cpp
 
+before_install:
+  - brew install qt@5.7
+
 before_script:
   - mkdir build
   - cd build
