@@ -4,11 +4,14 @@ language: cpp
 before_install:
   - brew install qt@5.7
 
+install: true
+
 before_script:
   - mkdir build
   - cd build
   - cmake -DCMAKE_PREFIX_PATH=/usr/local/opt/qt@5.7/ ..
 
-script: make
+script:
+  - make
+  - make install
 
-install: make install
