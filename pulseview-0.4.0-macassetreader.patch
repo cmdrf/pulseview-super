@@ -1,0 +1,143 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index af39c89..9095e70 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -364,6 +364,10 @@ if(ANDROID)
+ 		android/assetreader.cpp
+ 		android/loghandler.cpp
+ 	)
++elseif(APPLE)
++	list(APPEND pulseview_SOURCES
++		macos/assetreader.cpp
++	)
+ endif()
+ 
+ qt5_add_resources(pulseview_RESOURCES_RCC ${pulseview_RESOURCES})
+diff --git a/macos/assetreader.cpp b/macos/assetreader.cpp
+new file mode 100644
+index 0000000..a88d693
+--- /dev/null
++++ b/macos/assetreader.cpp
+@@ -0,0 +1,65 @@
++#include "assetreader.hpp"
++
++#include <memory>
++
++#include <QtCore/QDebug>
++#include <QtCore/QFile>
++#include <QtCore/QStandardPaths>
++#include <QtCore/QCoreApplication>
++
++#include <libsigrok/libsigrok.h>
++
++using namespace pv;
++
++using std::string;
++using std::unique_ptr;
++
++void MacAssetReader::open(struct sr_resource *res, string name)
++{
++	if (res->type != SR_RESOURCE_FIRMWARE) {
++		qWarning() << "MacAssetReader: Unknown resource type" << res->type;
++		throw sigrok::Error{SR_ERR};
++	}
++
++	auto path = QCoreApplication::applicationDirPath() + "/../Resources/sigrok-firmware/" + QString::fromStdString(name);
++
++	unique_ptr<QFile> file {new QFile{path}};
++
++	if (!file->open(QIODevice::ReadOnly))
++		throw sigrok::Error{SR_ERR};
++
++	const auto size = file->size();
++	if (size < 0)
++		throw sigrok::Error{SR_ERR};
++
++	res->size = size;
++	res->handle = file.release();
++
++}
++
++void MacAssetReader::close(struct sr_resource *res)
++{
++	if (!res->handle) {
++		qCritical("MacAssetReader: Invalid handle");
++		throw sigrok::Error{SR_ERR_ARG};
++	}
++	const unique_ptr<QFile> file {static_cast<QFile*>(res->handle)};
++	res->handle = nullptr;
++
++	file->close();
++}
++
++size_t MacAssetReader::read(const struct sr_resource *res, void *buf, size_t count)
++{
++	if (!res->handle) {
++		qCritical("MacAssetReader: Invalid handle");
++		throw sigrok::Error{SR_ERR_ARG};
++	}
++	auto *const file = static_cast<QFile*>(res->handle);
++
++	const auto n_read = file->read(static_cast<char*>(buf), count);
++	if (n_read < 0)
++		throw sigrok::Error{SR_ERR};
++
++	return n_read;
++}
+diff --git a/macos/assetreader.hpp b/macos/assetreader.hpp
+new file mode 100644
+index 0000000..d0152e4
+--- /dev/null
++++ b/macos/assetreader.hpp
+@@ -0,0 +1,20 @@
++#ifndef PULSEVIEW_MACOS_ASSETREADER_HPP
++#define PULSEVIEW_MACOS_ASSETREADER_HPP
++
++#include <libsigrokcxx/libsigrokcxx.hpp>
++
++using std::string;
++
++namespace pv {
++
++class MacAssetReader : public sigrok::ResourceReader
++{
++private:
++	void open(struct sr_resource *res, string name) override;
++	void close(struct sr_resource *res) override;
++	size_t read(const struct sr_resource *res, void *buf, size_t count) override;
++};
++
++} // namespace pv
++
++#endif // !PULSEVIEW_MACOS_ASSETREADER_HPP
+diff --git a/main.cpp b/main.cpp
+index ce7db5f..ebabade 100644
+--- a/main.cpp
++++ b/main.cpp
+@@ -40,6 +40,8 @@
+ #include <libsigrokandroidutils/libsigrokandroidutils.h>
+ #include "android/assetreader.hpp"
+ #include "android/loghandler.hpp"
++#elif __APPLE__
++#include "macos/assetreader.hpp"
+ #endif
+ 
+ #include "config.h"
+@@ -85,6 +87,8 @@ int main(int argc, char *argv[])
+ 	srau_init_environment();
+ 	pv::AndroidLogHandler::install_callbacks();
+ 	pv::AndroidAssetReader asset_reader;
++#elif __APPLE__
++	pv::MacAssetReader asset_reader;
+ #endif
+ 
+ 	// Parse arguments
+@@ -156,7 +160,7 @@ int main(int argc, char *argv[])
+ 
+ 	// Initialise libsigrok
+ 	context = sigrok::Context::create();
+-#ifdef ANDROID
++#if defined(ANDROID) || defined(__APPLE__)
+ 	context->set_resource_reader(&asset_reader);
+ #endif
+ 	do {

@@ -1,11 +1,14 @@
-ExternalProject_Add(ext_pulseview
+ExternalProject_Add(pulseview
 	DEPENDS boost
 	DEPENDS libsigrok
 	DEPENDS libsigrokdecode
 	DEPENDS glibmm
 	DEPENDS Qt5
+
 	URL http://sigrok.org/download/source/pulseview/pulseview-0.4.0.tar.gz
 	URL_MD5 122ded293913ec773cd34cb68b93e0f9
+	PATCH_COMMAND patch -p1 < ${CMAKE_SOURCE_DIR}/pulseview-0.4.0-macassetreader.patch
+
 	CMAKE_ARGS
 		-DPKG_CONFIG_EXECUTABLE=${PKG_CONFIG_EXECUTABLE}
 		-DCMAKE_PREFIX_PATH=${CMAKE_BINARY_DIR}/dep-install/
