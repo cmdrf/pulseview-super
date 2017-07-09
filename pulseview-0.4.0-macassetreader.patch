@@ -111,7 +111,7 @@ index 0000000..d0152e4
 +
 +#endif // !PULSEVIEW_MACOS_ASSETREADER_HPP
 diff --git a/main.cpp b/main.cpp
-index ce7db5f..ebabade 100644
+index ce7db5f..8253b82 100644
 --- a/main.cpp
 +++ b/main.cpp
 @@ -40,6 +40,8 @@
@@ -132,7 +132,7 @@ index ce7db5f..ebabade 100644
  #endif
  
  	// Parse arguments
-@@ -156,7 +160,7 @@ int main(int argc, char *argv[])
+@@ -156,14 +160,15 @@ int main(int argc, char *argv[])
  
  	// Initialise libsigrok
  	context = sigrok::Context::create();
@@ -141,3 +141,12 @@ index ce7db5f..ebabade 100644
  	context->set_resource_reader(&asset_reader);
  #endif
  	do {
+ 
+ #ifdef ENABLE_DECODE
+ 		// Initialise libsigrokdecode
+-		if (srd_init(nullptr) != SRD_OK) {
++		QString modulePath = QCoreApplication::applicationDirPath() + "/../Resources/libsigrokdecode/decoders/";
++		if (srd_init(modulePath.toUtf8().constData()) != SRD_OK) {
+ 			qDebug() << "ERROR: libsigrokdecode init failed.";
+ 			break;
+ 		}

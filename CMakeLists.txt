@@ -24,4 +24,6 @@ install(PROGRAMS ${CMAKE_BINARY_DIR}/pulseview-prefix/src/pulseview-build/pulsev
 install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/pulseview.icns DESTINATION ${CMAKE_BINARY_DIR}/PulseView.app/Contents/Resources/ RENAME PulseView.icns)
 install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/pulseview.plist DESTINATION ${CMAKE_BINARY_DIR}/PulseView.app/Contents/ RENAME Info.plist)
 install(DIRECTORY ${CMAKE_BINARY_DIR}/dep-install/share/sigrok-firmware DESTINATION ${CMAKE_BINARY_DIR}/PulseView.app/Contents/Resources/)
+install(DIRECTORY ${CMAKE_BINARY_DIR}/dep-install/lib/python3.6 DESTINATION ${CMAKE_BINARY_DIR}/PulseView.app/Contents/lib)
+install(DIRECTORY ${CMAKE_BINARY_DIR}/dep-install/share/libsigrokdecode DESTINATION ${CMAKE_BINARY_DIR}/PulseView.app/Contents/Resources)
 install(CODE "execute_process(COMMAND ${QT_MACDEPLOYQT_EXECUTABLE} ${CMAKE_BINARY_DIR}/PulseView.app -dmg -libpath=${CMAKE_BINARY_DIR}/dep-install/lib)")
