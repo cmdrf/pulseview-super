@@ -1,6 +1,6 @@
 ExternalProject_Add(sigrok-firmware-fx2lafw
-	URL http://sigrok.org/download/binary/sigrok-firmware-fx2lafw/sigrok-firmware-fx2lafw-bin-0.1.5.tar.gz
-	URL_MD5 752bd3112c3314f244b18be42610eba8
+	URL http://sigrok.org/download/binary/sigrok-firmware-fx2lafw/sigrok-firmware-fx2lafw-bin-0.1.6.tar.gz
+	URL_MD5 244150187dff38f7baba3346503c827f
 	BUILD_IN_SOURCE On
 	CONFIGURE_COMMAND ""
 	BUILD_COMMAND ""
