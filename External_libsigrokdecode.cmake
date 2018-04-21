@@ -2,8 +2,8 @@ ExternalProject_Add(libsigrokdecode
 	DEPENDS pkg-config
 	DEPENDS libsigrok
 	DEPENDS python
-	URL http://sigrok.org/download/source/libsigrokdecode/libsigrokdecode-0.5.0.tar.gz
-	URL_MD5 0f23ad53cb67948bf4f091bbaacba13d
+	URL http://sigrok.org/download/source/libsigrokdecode/libsigrokdecode-0.5.1.tar.gz
+	URL_MD5 1e950dfb4c521a334e150640348efcd4
 	BUILD_IN_SOURCE On
 	CONFIGURE_COMMAND env
 		PKG_CONFIG=${PKG_CONFIG_EXECUTABLE}
