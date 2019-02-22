@@ -1,6 +1,6 @@
 ExternalProject_Add(doxygen
-	URL http://ftp.stack.nl/pub/users/dimitri/doxygen-1.8.13.src.tar.gz
-	URL_MD5 0fa414975f8cd6d30e126c28327c1f7c
+	URL http://doxygen.nl/files/doxygen-1.8.15.src.tar.gz
+	URL_MD5 2c98c73eba392d334f5bbaf15e09bae3
 
 	CMAKE_ARGS
 		-DPKG_CONFIG_EXECUTABLE=${PKG_CONFIG_EXECUTABLE}
