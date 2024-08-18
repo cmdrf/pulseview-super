@@ -3,8 +3,8 @@ find_package(Qt5 5.7 COMPONENTS Core Gui Widgets Svg)
 if(NOT Qt5_FOUND)
 	ExternalProject_Add(Qt5
 	#	INSTALL_DIR ${CMAKE_BINARY_DIR}/dep-install/
-		URL http://download.qt.io/official_releases/qt/5.9/5.9.1/single/qt-everywhere-opensource-src-5.9.1.tar.xz
-		URL_MD5 77b4af61c49a09833d4df824c806acaf
+		URL https://download.qt.io/official_releases/qt/5.15/5.15.14/single/qt-everywhere-opensource-src-5.15.14.tar.xz
+		URL_MD5 0265e7988790d8845441558130d59311
 		BUILD_IN_SOURCE 1
 		CONFIGURE_COMMAND env
 			PKG_CONFIG=${CMAKE_BINARY_DIR}/dep-install/bin/pkg-config
